@@ -105,7 +105,6 @@ def visualize_results(scalar_sets, window_size=4):
         results = measure_algorithms(scalars, window_size)
         result_list.append(results)
         labels.append(f"Set {idx}")
-        # Print the results to the console
         print(
             f"Scalar Set {idx} --> SMBR: {results['SMBR']:.6f} s, "
             f"Montgomery: {results['Montgomery']:.6f} s, "
@@ -121,29 +120,33 @@ def visualize_results(scalar_sets, window_size=4):
     lookup_means = [res['LookupTable'] for res in result_list]
     comb_means = [res['CombMethod'] for res in result_list]
 
-    plt.figure(figsize=(12, 8))
+    # Bar Chart
+    plt.figure(figsize=(14, 10))  # Increased figure size for better readability
     plt.bar([x - 1.5 * width for x in x_positions], smbr_means, width=width, color='tab:blue', label='SMBR')
     plt.bar([x - 0.5 * width for x in x_positions], monty_means, width=width, color='tab:green', label='Montgomery')
     plt.bar([x + 0.5 * width for x in x_positions], lookup_means, width=width, color='tab:orange', label='Lookup Table')
     plt.bar([x + 1.5 * width for x in x_positions], comb_means, width=width, color='tab:red', label='Comb Method')
 
-    plt.xticks(x_positions, labels)
-    plt.ylabel('Average Execution Time (seconds)')
-    plt.title('Comparison of ECC Scalar Multiplication Methods - Bar Chart')
-    plt.legend()
+    plt.xticks(x_positions, labels, fontsize=20)  # Increased tick label fontsize
+    plt.yticks(fontsize=18)  # Increased y-tick label fontsize
+    plt.ylabel('Average Execution Time (seconds)', fontsize=22)  # Increased y-label fontsize
+    plt.title('Comparison of ECC Scalar Multiplication Methods - Bar Chart', fontsize=26)  # Increased title fontsize
+    plt.legend(fontsize=20)  # Increased legend fontsize
     plt.tight_layout()
     plt.show()
 
-    plt.figure(figsize=(12, 8))
+    # Line Chart
+    plt.figure(figsize=(14, 10))  # Increased figure size for better readability
     plt.plot(x_positions, smbr_means, marker='o', color='tab:blue', linestyle='--', label='SMBR')
     plt.plot(x_positions, monty_means, marker='o', color='tab:green', linestyle='--', label='Montgomery')
     plt.plot(x_positions, lookup_means, marker='o', color='tab:orange', linestyle='--', label='Lookup Table')
     plt.plot(x_positions, comb_means, marker='o', color='tab:red', linestyle='--', label='Comb Method')
 
-    plt.xticks(x_positions, labels)
-    plt.ylabel('Average Execution Time (seconds)')
-    plt.title('Comparison of ECC Scalar Multiplication Methods - Line Chart')
-    plt.legend()
+    plt.xticks(x_positions, labels, fontsize=20)  # Increased tick label fontsize
+    plt.yticks(fontsize=18)  # Increased y-tick label fontsize
+    plt.ylabel('Average Execution Time (seconds)', fontsize=22)  # Increased y-label fontsize
+    plt.title('Comparison of ECC Scalar Multiplication Methods - Line Chart', fontsize=26)  # Increased title fontsize
+    plt.legend(fontsize=20)  # Increased legend fontsize
     plt.tight_layout()
     plt.show()
 
@@ -183,8 +186,8 @@ def measure_algorithms_with_variance(scalar_values, window_size=4):
 
 def visualize_histograms(scalar_sets, window_size=4):
     for idx, scalars in enumerate(scalar_sets, start=1):
-        curve = curves.SECP256k1.curve  # Get the SECP256k1 curve
-        G = curves.SECP256k1.generator  # Get the generator point
+        curve = curves.SECP256k1.curve
+        G = curves.SECP256k1.generator
 
         smbr_times = []
         montgomery_times = []
@@ -208,16 +211,18 @@ def visualize_histograms(scalar_sets, window_size=4):
             _ = comb_method_low_latency(scalar, G, window_size)
             comb_times.append(time.time() - start)
 
-        plt.figure(figsize=(12, 8))
-        plt.hist(smbr_times, bins=10, alpha=0.5, label='SMBR', color='tab:blue')
-        plt.hist(montgomery_times, bins=10, alpha=0.5, label='Montgomery', color='tab:green')
-        plt.hist(lookup_times, bins=10, alpha=0.5, label='Lookup Table', color='tab:orange')
-        plt.hist(comb_times, bins=10, alpha=0.5, label='Comb Method', color='tab:red')
+        plt.figure(figsize=(14, 10))  # Increased figure size for better readability
+        plt.hist(smbr_times, bins=15, alpha=0.5, label='SMBR', color='tab:blue')
+        plt.hist(montgomery_times, bins=15, alpha=0.5, label='Montgomery', color='tab:green')
+        plt.hist(lookup_times, bins=15, alpha=0.5, label='Lookup Table', color='tab:orange')
+        plt.hist(comb_times, bins=15, alpha=0.5, label='Comb Method', color='tab:red')
 
-        plt.title(f'Distribution of ECC Scalar Multiplication Methods - Set {idx}')
-        plt.xlabel('Execution Time (seconds)')
-        plt.ylabel('Frequency')
-        plt.legend()
+        plt.title(f'Distribution of ECC Scalar Multiplication Methods - Set {idx}', fontsize=26)  # Increased title fontsize
+        plt.xlabel('Execution Time (seconds)', fontsize=22)  # Increased x-label fontsize
+        plt.ylabel('Frequency', fontsize=22)  # Increased y-label fontsize
+        plt.xticks(fontsize=20)  # Increased x-tick label fontsize
+        plt.yticks(fontsize=20)  # Increased y-tick label fontsize
+        plt.legend(fontsize=20)  # Increased legend fontsize
         plt.tight_layout()
         plt.show()
 
